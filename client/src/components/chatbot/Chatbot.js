@@ -30,14 +30,6 @@ class Chatbot extends Component {
     });
   }
 
-  // Open/Close Message box
-  async componentDidMount() {
-    if(!this.state.welcomeSent) {
-      await this.resolveAfterXSeconds(1.2);
-      this.setState({ welcomeSent: true, showBot: true });
-    }
-  }
-
   // Scroll to latest message
   componentDidUpdate() {
     if(this.state.showBot) {
