@@ -130,6 +130,7 @@ class Chatbot extends Component {
     return null;
   }
 
+  // Open/Close Message box
   toggleBot() {
     this.setState({ showBot: !this.state.showBot });
   }
