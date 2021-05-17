@@ -30,15 +30,15 @@ class Chatbot extends Component {
     });
   }
 
+  // Open/Close Message box
   async componentDidMount() {
     if(!this.state.welcomeSent) {
       await this.resolveAfterXSeconds(1.2);
-      this.df_event_query("WELCOME_TO_SITE");
       this.setState({ welcomeSent: true, showBot: true });
     }
   }
 
-  // Scroll to latest message on updation of state
+  // Scroll to latest message
   componentDidUpdate() {
     if(this.state.showBot) {
       this.messagesEnd.scrollIntoView({ behaviour: "smooth" });
@@ -48,7 +48,7 @@ class Chatbot extends Component {
     }
   }
 
-  //Function to send text query to server
+  // Function to send text query to server
   async df_text_query(text) {
     let says = {
       speaks: "me",
@@ -67,11 +67,6 @@ class Chatbot extends Component {
       userID: 1
     });
 
- 
-    if (res.data.action === 'input.whoAreYou' && res.data.allRequiredParamsPresent) {
-      this.setState({botName: res.data.parameters.fields.name.stringValue});
-    }
-
     res.data.fulfillmentMessages.forEach(message => {
       says = {
         speaks: "bot",
@@ -81,27 +76,6 @@ class Chatbot extends Component {
         messages: [...this.state.messages, says]
       });
     });
-    
-
-    this.sound.play();
-  }
-
-  // Function to send event query to server
-  async df_event_query(event) {
-    const res = await axios.post("/api/df_event_query", {
-      event,
-      userID: 2
-    });
-    // Iterating over all the responeses in the the request response
-    // because the chatbot can have multiple responses for a single phrase
-    for (let msg of res.data.fulfillmentMessages) {
-      let says = {
-        speaks: "bot",
-        message: msg
-      };
-      this.setState({ messages: [...this.state.messages, says] });
-    }
-    this.sound.play();
   }
 
   //Helper functions
