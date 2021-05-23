@@ -13,7 +13,6 @@ class Chatbot extends Component {
     this.state = {
       messages: [],
       showBot: false,
-      welcomeSent: false,
       botName: 'Chatbot'
     };
 
@@ -39,9 +38,10 @@ class Chatbot extends Component {
       this.chatInput.focus();
     }
   }
-
+  
   // Function to send text query to server
   async df_text_query(text) {
+    console.log(text)
     let says = {
       speaks: "me",
       message: {
@@ -54,21 +54,33 @@ class Chatbot extends Component {
       messages: [...this.state.messages, says]
     });
 
-    const res = await axios.post("/api/df_text_query", {
-      text,
-      userID: 1
-    });
-
-    res.data.fulfillmentMessages.forEach(message => {
-      says = {
-        speaks: "bot",
-        message
-      };
-      this.setState({
-        messages: [...this.state.messages, says]
+  // Check Text Values
+  switch(text) {
+    case text = "set darkmode":
+      // code block
+      break;
+    case text = "set lightmode":
+      // code block
+      break;
+    default:
+      // code block
+      const res = await axios.post("/api/df_text_query", {
+        text,
+        userID: 1
       });
-    });
-  }
+
+      // 
+      res.data.fulfillmentMessages.forEach(message => {
+        says = {
+          speaks: "bot",
+          message
+        };
+        this.setState({
+          messages: [...this.state.messages, says]
+        });
+      });
+    }
+  };
 
   //Helper functions
   isNormalMessage(message) {
@@ -210,7 +222,6 @@ class Chatbot extends Component {
         >
           <nav onClick={this.toggleBot}>
             <div id="chatwindow-nav" className="nav-wrapper">
-              <span>{ botName }</span>
             </div>
           </nav>
         </div>
