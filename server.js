@@ -1,18 +1,31 @@
-// 1. Import dependencies
+
 const express = require("express");
+const bodyParser = require("body-parser");
+const path = require("path");
+const config = require("./config/keys");
+
 const app = express();
-require("dotenv").config();
+const PORT = process.env.PORT || 5000;
 
-// 1.1 Allow parsing on request bodies
-app.use(express.json());
+//Routes
+// const dialogFlowRoutes = require("./routes/dialogFlow");
+// const fulfillmentRoutes = require("./routes/fulfillment");
 
-// 2. Import routes for api
-const watsonRoutes = require("./routes/api/watson");
-// 2.1 Direct requests to /api/watson to Watson Routes
-app.use("/api/watson", watsonRoutes);
+app.use(bodyParser.json());
 
-// 3. Start server
-const port = process.env.PORT || 5000;
-app.listen(port, () => {
-  console.log("Server listening on port ", port);
+app.get("/api", (req, res) => {
+  res.send({ hello: "there" });
+});
+
+if (process.env.NODE_ENV === "production") {
+  // js and css files
+  app.use(express.static("client/build"));
+  // index.html
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  });
+}
+
+app.listen(PORT, () => {
+  console.log(`server started at port ${PORT}`);
 });

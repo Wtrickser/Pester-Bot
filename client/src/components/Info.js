@@ -3,7 +3,6 @@ import React from 'react';
 const Info = () => (
 	<div className="card">
 		<div className="card-image" style={{heigth: "150px"}}>
-      <img src="../assets/bot.jpg"/>
       <span className="card-title">Welcome to Pester-bot!</span>
     </div>
     <div className="card-content">

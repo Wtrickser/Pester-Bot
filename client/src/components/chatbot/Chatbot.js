@@ -41,7 +41,6 @@ class Chatbot extends Component {
   
   // Function to send text query to server
   async df_text_query(text) {
-    console.log(text)
     let says = {
       speaks: "me",
       message: {
@@ -53,23 +52,27 @@ class Chatbot extends Component {
     this.setState({
       messages: [...this.state.messages, says]
     });
-
+    console.log(says)
   // Check Text Values
   switch(text) {
+    // If
     case text = "set darkmode":
       // code block
+
       break;
+    // If
     case text = "set lightmode":
       // code block
+
       break;
+    // If
     default:
       // code block
       const res = await axios.post("/api/df_text_query", {
         text,
         userID: 1
       });
-
-      // 
+      // Give Res To UI
       res.data.fulfillmentMessages.forEach(message => {
         says = {
           speaks: "bot",
