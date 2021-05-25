@@ -13,11 +13,10 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^0.19.2",
-    "cleverbot-free": "^1.1.6",
+    "uuid": "^8.3.2",
     "cleverbot.io": "^1.0.4",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "ibm-watson": "^5.5.0",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
