@@ -8,7 +8,7 @@ const Info = () => (
     <div className="card-content">
       <p>
         This is a simple chatbot powered by Cleverbot API. You can asking it anything and it will do it's best to hold a conversion.
-        You can also tell the bot to change the message box color by type "set style A" or "set style B"
+        You can also tell the bot to change the message box color by type "set lightmode" or "set darkmode"
       </p>
     </div>
 	</div>

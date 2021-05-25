@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import axios from "axios";
+// import axios from "axios";
 import Message from "./Message";
 import Card from "./Card";
 
@@ -12,8 +12,8 @@ class Chatbot extends Component {
     super(props);
     this.state = {
       messages: [],
+      botName: 'Pester-Bot',
       showBot: false,
-      botName: 'Chatbot'
     };
 
     //Binding event listeners
@@ -21,13 +21,13 @@ class Chatbot extends Component {
     this._handleInputKeyPress = this._handleInputKeyPress.bind(this);
   }
 
-  resolveAfterXSeconds(time) {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve(time);
-      }, time * 1000);
-    });
-  }
+  // resolveAfterXSeconds(time) {
+  //   return new Promise(resolve => {
+  //     setTimeout(() => {
+  //       resolve(time);
+  //     }, time * 1000);
+  //   });
+  // }
 
   // Scroll to latest message
   componentDidUpdate() {
@@ -38,10 +38,59 @@ class Chatbot extends Component {
       this.chatInput.focus();
     }
   }
-  
-  // Function to send text query to server
-  async df_text_query(text) {
+
+  // Scripted Responses
+  islightmode() {
+    let text = "Lightmode set";
     let says = {
+      speaks: "bot",
+      message: {
+        text: {
+          text
+        }
+      }
+    };
+    this.setState({
+      messages: [...this.state.messages, says]
+    });
+  };
+
+  isDarkmode() {
+    let text = "Darkmode set";
+    let says = {
+      speaks: "bot",
+      message: {
+        text: {
+          text
+        }
+      }
+    };
+    this.setState({
+      messages: [...this.state.messages, says]
+    });
+  };
+
+  isOther() {
+    let text = "Sorry I would say something witty and/or funny but Cleverbot.io is currently unresponsive"
+    let says = {
+      key: 1,
+      speaks: "bot",
+      message: {
+        text: {
+          text
+        }
+      }
+    };
+    this.setState({
+      messages: [...this.state.messages, says]
+    });
+  };
+
+  // Function to send text query to server
+  df_text_query(text) {
+    console.log(text);
+    let says = {
+      key: 0,
       speaks: "me",
       message: {
         text: {
@@ -52,38 +101,27 @@ class Chatbot extends Component {
     this.setState({
       messages: [...this.state.messages, says]
     });
-    console.log(says)
-  // Check Text Values
-  switch(text) {
-    // If
-    case text = "set darkmode":
-      // code block
-
+    
+    // Check Text Values
+    switch(text) {
+      // If
+      case text = "set darkmode":
+        // code block
+        this.isDarkmode();
       break;
-    // If
-    case text = "set lightmode":
+      // If
+      case text = "set lightmode":
       // code block
-
+        this.islightmode();
       break;
-    // If
-    default:
-      // code block
-      const res = await axios.post("/api/df_text_query", {
-        text,
-        userID: 1
-      });
-      // Give Res To UI
-      res.data.fulfillmentMessages.forEach(message => {
-        says = {
-          speaks: "bot",
-          message
-        };
-        this.setState({
-          messages: [...this.state.messages, says]
-        });
-      });
+      // If
+      default:
+        // code block
+        this.isOther();
     }
   };
+
+
 
   //Helper functions
   isNormalMessage(message) {
@@ -156,11 +194,13 @@ class Chatbot extends Component {
       this.df_text_query(e.target.value);
       e.target.value = "";
     }
-  }
+  };
 
+  // Render Bot-Box
   render() {
     const { showBot, botName } = this.state;
 
+    // Box Open
     if (showBot) {
       return (
         <div
@@ -176,7 +216,7 @@ class Chatbot extends Component {
           <nav>
             <div id="chatwindow-nav" className="nav-wrapper">
               <span>{ botName }</span>
-              <span className="close" onClick={this.toggleBot}>x</span>
+              <span className="close" onClick={this.toggleBot}>X</span>
             </div>
           </nav>
           <div
@@ -205,14 +245,13 @@ class Chatbot extends Component {
                 borderTop: '1px solid lightgrey',
                 marginBottom: 0
               }}
-              placeholder="Start Talking to the bot!"
+              placeholder="Type Anything To Start!"
               onKeyPress={this._handleInputKeyPress}
             />
-          
         </div>
       );
     } else {
-
+      // Box Closed
       return (
         <div
           style={{
@@ -225,6 +264,7 @@ class Chatbot extends Component {
         >
           <nav onClick={this.toggleBot}>
             <div id="chatwindow-nav" className="nav-wrapper">
+              <span>{ botName }</span>
             </div>
           </nav>
         </div>
